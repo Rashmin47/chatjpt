@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "783567230580",
+    "project_id": "chatjpt-b29c2",
+    "storage_bucket": "chatjpt-b29c2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783567230580:android:0b740be5d5f54ce7a06321",
+        "android_client_info": {
+          "package_name": "com.example.chatjpt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMH4-7ztT7u7Pm-Tnr5bZhUr-iRNXqM48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

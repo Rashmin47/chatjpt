@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NewMessages extends StatefulWidget {
@@ -8,7 +10,7 @@ class NewMessages extends StatefulWidget {
 }
 
 class _NewMessagesState extends State<NewMessages> {
-  var _messageController = TextEditingController();
+  final _messageController = TextEditingController();
 
   @override
   void dispose() {
@@ -16,29 +18,52 @@ class _NewMessagesState extends State<NewMessages> {
     super.dispose();
   }
 
-  void _submitMessage() {
+  void _submitMessage() async {
+
     final enteredMessage = _messageController.text;
-    if(enteredMessage.trim().isEmpty) {
+    if (enteredMessage.trim().isEmpty) {
       return;
     }
-    // send to Firebase
+    FocusScope.of(context).unfocus();
     _messageController.clear();
+    // send to Firebase
+    final user = FirebaseAuth.instance.currentUser!;
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+    FirebaseFirestore.instance.collection('chat').add({
+      'text': enteredMessage,
+      'createdAt': Timestamp.now(),
+      'userId': user.uid,
+      'username': userData.data()!['username'],
+    });
+
+
   }
+
   @override
   Widget build(BuildContext context) {
-    return  Padding(
-      padding: EdgeInsets.only(left: 15,right: 1,bottom: 14),
-      child: Row(children: [
-      Expanded(child: TextField(
-        controller: _messageController,
-        textCapitalization: TextCapitalization.sentences,
-        autocorrect: true,
-        enableSuggestions: true,
-        decoration: InputDecoration(labelText: 'Send a message...'),
-      )),
-        IconButton(
+    return Padding(
+      padding: EdgeInsets.only(left: 15, right: 1, bottom: 14),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _messageController,
+              textCapitalization: TextCapitalization.sentences,
+              autocorrect: true,
+              enableSuggestions: true,
+              decoration: InputDecoration(labelText: 'Send a message...'),
+            ),
+          ),
+          IconButton(
             color: Theme.of(context).colorScheme.primary,
-            onPressed: () {}, icon: Icon(Icons.send))
-    ],),);
+            onPressed: _submitMessage,
+            icon: Icon(Icons.send),
+          ),
+        ],
+      ),
+    );
   }
 }

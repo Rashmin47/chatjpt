@@ -1,6 +1,10 @@
 import 'package:chatjpt/screens/auth.dart';
 import 'package:chatjpt/screens/chat.dart';
+import 'package:chatjpt/screens/chat_screen.dart';
+import 'package:chatjpt/screens/login_screen.dart';
+import 'package:chatjpt/screens/registration_screen.dart';
 import 'package:chatjpt/screens/splash.dart';
+import 'package:chatjpt/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +24,14 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'FlutterChat',
+      initialRoute: WelcomeScreen.id,
+        routes: {
+        WelcomeScreen.id : (context) => WelcomeScreen(),
+        LoginScreen.id : (context) => LoginScreen(),
+        RegistrationScreen.id : (context) => RegistrationScreen(),
+        ChatScreen.id : (context) => ChatScreen(),
+        },
+        title: 'ChatJPT',
         theme: ThemeData().copyWith(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
@@ -31,7 +42,7 @@ class App extends StatelessWidget {
             return const SplashScreen();
           }
           if(snapshot.hasData) {
-            return ChatScreen();
+            return ChatScreen1();
           }
           return const AuthScreen();
         }
